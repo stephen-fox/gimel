@@ -81,6 +81,7 @@ func MemfdCreateFromReader(optionalDisplayName string, flags uint, source io.Rea
 
 	_, err = io.Copy(inMemory, source)
 	if err != nil {
+		inMemory.Close()
 		return nil, fmt.Errorf("failed to copy source to in-memory file - %w", err)
 	}
 
@@ -106,6 +107,7 @@ func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error)
 		"fd",
 		fmt.Sprintf("%d", fd)))
 	if memFile == nil {
+		syscall.Close(int(fd))
 		return nil, fmt.Errorf("os.NewFile returned nil when given mem fd %d", fd)
 	}
 
