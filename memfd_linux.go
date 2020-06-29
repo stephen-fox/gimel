@@ -14,7 +14,7 @@ const (
 	memfdCreateID = 319
 )
 
-// Various 'memfd_create' constants.
+// Various 'memfd_create()' constants.
 //
 // Refer to the man page for more information:
 // https://man7.org/linux/man-pages/man2/memfd_create.2.html
@@ -76,7 +76,7 @@ func FileFromMemfdCreate(optionalDisplayName string, flags uint, sourcePath stri
 // MemfdCreateOSFile wraps the MemfdCreate() function, returning a *os.File
 // with a properly populated name rather than a raw file descriptor.
 // The *os.File returned by this function represents a RAM-backed file.
-// Callers should close the *os.File only after any dependent resources are
+// Callers should close the *os.File only after all dependent resources are
 // finished with it.
 //
 // Refer to MemfdCreate() for more information.
@@ -98,7 +98,7 @@ func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error)
 	return memFile, nil
 }
 
-// MemfdCreate executes the 'memfd_create' syscall.
+// MemfdCreate executes the 'memfd_create()' syscall.
 //
 // From the man page:
 //	memfd_create() creates an anonymous file and returns a file
@@ -133,7 +133,7 @@ func CopyDataIntoMemFile(data io.ReadCloser, inMemoryFile *os.File) error {
 	_, err := io.Copy(inMemoryFile, data)
 	data.Close()
 	if err != nil {
-		return fmt.Errorf("failed to copy data into file - %w", err)
+		return fmt.Errorf("failed to copy data into in-memory file - %w", err)
 	}
 
 	return nil
