@@ -1,4 +1,4 @@
-// Package gimel provides functionality for in memory execution on Linux.
+// Package gimel provides functionality for in-memory execution on Linux.
 // It is primarily a wrapper for the 'memfd_create' system call, although
 // it could easily be extended to utilize other strategies for running
 // executables from memory.
