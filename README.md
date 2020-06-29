@@ -1,6 +1,7 @@
 # gimel
 
 [![GoDoc][godoc-badge]][godoc]
+[godoc-badge]: https://godoc.org/github.com/stephen-fox/gimel?status.svg
 [godoc]: https://godoc.org/github.com/stephen-fox/gimel
 
 Package gimel provides functionality for in-memory execution on Linux.
