@@ -13,9 +13,10 @@ on the subject a read.
 
 ## APIs
 
-#### memfd_create(2) wrappers
+#### `memfd_create(2)` wrappers
 The [memfd_create(2)](https://man7.org/linux/man-pages/man2/memfd_create.2.html)
-system call is primarily used to load files into memory by this library.
+system call copies data into memory. The library offers several functions for
+executing the system call:
 
 - `MemfdCreate()` - Executes `memfd_create(2)`, returning a file descriptor
 representing the in-memory file
