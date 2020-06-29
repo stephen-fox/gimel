@@ -37,4 +37,9 @@ Several helper functions are also available:
 specified *os.File and closes the io.ReadCloser
 
 ## Examples
-Please refer to the [examples/ directory](examples/).
+The following examples can be found in the [examples/ directory](examples/):
+
+- [examples/runonce/](examples/runonce/main.go) - Run an application from
+memory only one time
+- [examples/multirun/](examples/multirun/main.go) - Run an application from
+memory several times in a row, reusing the existing in-memory file
