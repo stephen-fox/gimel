@@ -108,7 +108,7 @@ func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error)
 		fmt.Sprintf("%d", fd)))
 	if memFile == nil {
 		syscall.Close(int(fd))
-		return nil, fmt.Errorf("os.NewFile returned nil when given mem fd %d", fd)
+		return nil, fmt.Errorf("os.NewFile returned nil when given 'memfd_create' fd %d", fd)
 	}
 
 	return memFile, nil
