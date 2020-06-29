@@ -45,7 +45,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to copy file and setup - %s", err.Error())
 	}
-	defer inMemoryFile.Close()
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -54,6 +53,7 @@ func main() {
 	log.Printf("executing: '%v'...", cmd.Args)
 
 	err = cmd.Run()
+	inMemoryFile.Close()
 	if err != nil {
 		log.Fatalf("failed to run process from memory - %s", err.Error())
 	}

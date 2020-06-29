@@ -44,7 +44,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to create in memory file - %s", err.Error())
 	}
-	defer inMemory.Close()
 
 	for i := 1; i < *numIterations+1; i++ {
 		cmd := gimel.InMemoryFileToCmd(inMemory, flag.CommandLine.Args()[1:]...)
@@ -56,8 +55,11 @@ func main() {
 
 		err := cmd.Run()
 		if err != nil {
+			inMemory.Close()
 			log.Fatalf("[run %d] failed to run executable from memory - %s",
 				i, err.Error())
 		}
 	}
+
+	inMemory.Close()
 }
