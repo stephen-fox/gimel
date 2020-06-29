@@ -28,7 +28,7 @@ const (
 	MfdCloExec = 1
 )
 
-// MemfdCreateFromExe creates a RAM-backed file using the 'memfd_create'
+// MemfdCreateFromExe creates a RAM-backed file using the 'memfd_create()'
 // system call, and copies the specified executable file into it, returning
 // a *exec.Cmd and a *os.File representing the in-memory file. Callers should
 // close the *os.File only after they are finished running the executable.
