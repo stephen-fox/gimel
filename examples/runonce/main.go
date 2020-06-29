@@ -38,7 +38,7 @@ func main() {
 		log.Fatalf("failed to lookup '%s'", flag.CommandLine.Args()[0])
 	}
 
-	cmd, inMemoryFile, err := gimel.CmdFromMemfdCreate(
+	cmd, inMemoryFile, err := gimel.MemfdCreateFromExe(
 		"",
 		lookedUpApp,
 		flag.CommandLine.Args()[1:]...)

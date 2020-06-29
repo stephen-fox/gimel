@@ -28,7 +28,7 @@ const (
 	MfdCloExec = 1
 )
 
-// CmdFromMemfdCreate creates a RAM-backed file using the 'memfd_create'
+// MemfdCreateFromExe creates a RAM-backed file using the 'memfd_create'
 // system call, and copies the specified executable file into it, returning
 // a *exec.Cmd and a *os.File representing the in-memory file. Callers should
 // close the *os.File only after they are finished running the executable.
@@ -37,8 +37,8 @@ const (
 // can be reused to create a new *exec.Cmd.
 //
 // Refer to MemfdCreate() for more information.
-func CmdFromMemfdCreate(optionalDisplayName string, exeFilePath string, args ...string) (*exec.Cmd, *os.File, error) {
-	inMemory, err := FileFromMemfdCreate(optionalDisplayName, MfdCloExec, exeFilePath)
+func MemfdCreateFromExe(optionalDisplayName string, exeFilePath string, args ...string) (*exec.Cmd, *os.File, error) {
+	inMemory, err := MemfdCreateFromFile(optionalDisplayName, MfdCloExec, exeFilePath)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to call 'memfd_create' - %w", err)
 	}
@@ -46,28 +46,42 @@ func CmdFromMemfdCreate(optionalDisplayName string, exeFilePath string, args ...
 	return InMemoryFileToCmd(inMemory, args...), inMemory, nil
 }
 
-// FileFromMemfdCreate creates a RAM-backed file using the 'memfd_create'
+// MemfdCreateFromFile creates a RAM-backed file using the 'memfd_create()'
 // system call, and copies the specified file into it, returning a *os.File
 // representing the in-memory file. Callers should close the *os.File after
 // they are finished using it.
 //
 // Refer to MemfdCreate() for more information.
-func FileFromMemfdCreate(optionalDisplayName string, flags uint, sourcePath string) (*os.File, error) {
+func MemfdCreateFromFile(optionalDisplayName string, flags uint, sourcePath string) (*os.File, error) {
+	source, err := os.Open(sourcePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file for reading - %w", err)
+	}
+
+	inMemory, err := MemfdCreateFromReader(optionalDisplayName, flags, source)
+	source.Close()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create in-memory file from existing file on disk - %w", err)
+	}
+
+	return inMemory, nil
+}
+
+// MemfdCreateFromReader creates a RAM-backed file using the 'memfd_create()'
+// system call, and copies the io.Reader into it, returning a *os.File
+// representing the in-memory file. Callers should close the *os.File after
+// they are finished using it.
+//
+// Refer to MemfdCreate() for more information.
+func MemfdCreateFromReader(optionalDisplayName string, flags uint, source io.Reader) (*os.File, error) {
 	inMemory, err := MemfdCreateOSFile(optionalDisplayName, flags)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call 'memfd_create' - %w", err)
 	}
 
-	source, err := os.Open(sourcePath)
+	_, err = io.Copy(inMemory, source)
 	if err != nil {
-		inMemory.Close()
-		return nil, fmt.Errorf("failed to open file for reading - %w", err)
-	}
-
-	err = CopyDataIntoMemFile(source, inMemory)
-	if err != nil {
-		inMemory.Close()
-		return nil, fmt.Errorf("failed to copy file data into into in-memory file - %w", err)
+		return nil, fmt.Errorf("failed to copy source to in-memory file - %w", err)
 	}
 
 	return inMemory, nil

@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("failed to lookup '%s'", flag.CommandLine.Args()[0])
 	}
 
-	inMemory, err := gimel.FileFromMemfdCreate("", gimel.MfdCloExec, lookedUpApp)
+	inMemory, err := gimel.MemfdCreateFromFile("", gimel.MfdCloExec, lookedUpApp)
 	if err != nil {
 		log.Fatalf("failed to create in memory file - %s", err.Error())
 	}
