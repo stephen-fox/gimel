@@ -14,7 +14,7 @@ const (
 	memfdCreateID = 319
 )
 
-// Various 'memfd_create()' constants.
+// Various 'memfd_create(2)' constants.
 //
 // Refer to the man page for more information:
 // https://man7.org/linux/man-pages/man2/memfd_create.2.html
@@ -28,7 +28,7 @@ const (
 	MfdCloExec = 1
 )
 
-// MemfdCreateFromExe creates a RAM-backed file using the 'memfd_create()'
+// MemfdCreateFromExe creates a RAM-backed file using the 'memfd_create(2)'
 // system call, and copies the specified executable file into it, returning
 // a *exec.Cmd and a *os.File representing the in-memory file. Callers should
 // close the *os.File only after they are finished running the executable.
@@ -46,7 +46,7 @@ func MemfdCreateFromExe(optionalDisplayName string, exeFilePath string, args ...
 	return InMemoryFileToCmd(inMemory, args...), inMemory, nil
 }
 
-// MemfdCreateFromFile creates a RAM-backed file using the 'memfd_create()'
+// MemfdCreateFromFile creates a RAM-backed file using the 'memfd_create(2)'
 // system call, and copies the specified file into it, returning a *os.File
 // representing the in-memory file. Callers should close the *os.File after
 // they are finished using it.
@@ -67,7 +67,7 @@ func MemfdCreateFromFile(optionalDisplayName string, flags uint, sourcePath stri
 	return inMemory, nil
 }
 
-// MemfdCreateFromReader creates a RAM-backed file using the 'memfd_create()'
+// MemfdCreateFromReader creates a RAM-backed file using the 'memfd_create(2)'
 // system call, and copies the io.Reader into it, returning a *os.File
 // representing the in-memory file. Callers should close the *os.File after
 // they are finished using it.
@@ -112,7 +112,7 @@ func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error)
 	return memFile, nil
 }
 
-// MemfdCreate executes the 'memfd_create()' syscall.
+// MemfdCreate executes the 'memfd_create(2)' syscall.
 //
 // From the man page:
 //	memfd_create() creates an anonymous file and returns a file
