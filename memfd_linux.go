@@ -94,6 +94,11 @@ func MemfdCreateFromReader(optionalDisplayName string, flags uint, source io.Rea
 // Callers should close the *os.File only after all dependent resources are
 // finished with it.
 //
+// The resulting *os.File can be shared with other programs by passing its
+// file descriptor to a child process, or by sharing the *os.File.Name() with
+// other programs. Callers can control the mutability of the file using
+// "file sealing", which is controlled by or'ing the flags.
+//
 // Refer to MemfdCreate() for more information.
 func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error) {
 	fd, err := MemfdCreate(optionalDisplayName, flags)
@@ -127,6 +132,11 @@ func MemfdCreateOSFile(optionalDisplayName string, flags uint) (*os.File, error)
 // The optionalDisplayName specifies what the RAM-backed file should be named.
 // Per the 'memfd_create' documentation, the display name will always be
 // prefixed by the string 'memfd:', even if a display name is specified.
+//
+// The resulting file descriptor can be shared with other programs by passing
+// it to a child process, or by sharing its "/proc/<pid>/fd/<fd-id>" file path
+// with other programs. Callers can control the mutability of the file using
+// "file sealing", which is controlled by or'ing the flags.
 //
 // Refer to the man page for more information:
 // https://man7.org/linux/man-pages/man2/memfd_create.2.html

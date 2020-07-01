@@ -6,6 +6,9 @@
 [godoc]: https://godoc.org/github.com/stephen-fox/gimel
 
 Package gimel provides functionality for in-memory execution on Linux.
+It can also load arbitrary files into memory, which (in certain cases)
+can be shared with other Linux processes via file path or by passing the
+file descriptor via exec.
 
 This library is based on example code by @magisterquis. Please give their
 [excellent blog post](https://magisterquis.github.io/2018/03/31/in-memory-only-elf-execution.html)
@@ -43,3 +46,6 @@ The following examples can be found in the [examples/ directory](examples/):
 memory only one time
 - [examples/multirun/](examples/multirun/main.go) - Run an application from
 memory several times in a row, reusing the existing in-memory file
+- [examples/sharefile/](examples/sharefile/main.go) - Load an arbitrary file
+into memory, print its "/proc" file path so that other programs can access it
+using the file path
