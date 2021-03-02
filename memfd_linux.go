@@ -147,7 +147,7 @@ func MemfdCreate(optionalDisplayName string, flags uint) (uintptr, error) {
 		uintptr(flags),
 		0)
 	if int(fdRaw) < 0 {
-		return 0, fmt.Errorf(err.Error())
+		return 0, fmt.Errorf("memfdcreate system call failed - %w", err)
 	}
 
 	return fdRaw, nil
